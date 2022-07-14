@@ -18,7 +18,8 @@
       "id": "dotdesktop_files",
       "type": "text",
       "name": "DotDesktop Files to Open",
-      "default_value": ""
+      "description": "write the program names separeted by ':' character",
+      "default_value": "google-chrome:other"
     }
   ]
 }

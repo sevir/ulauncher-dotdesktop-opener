@@ -6,11 +6,8 @@ from ulauncher.api.client.Extension import Extension
 from ulauncher.api.client.EventListener import EventListener
 from ulauncher.api.shared.event import KeywordQueryEvent, ItemEnterEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
-from ulauncher.api.shared.item.ExtensionSmallResultItem import ExtensionSmallResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.ExtensionCustomAction import ExtensionCustomAction
-from ulauncher.api.shared.action.HideWindowAction import HideWindowAction
-from ulauncher.api.shared.action.CopyToClipboardAction import CopyToClipboardAction
 
 logger = logging.getLogger(__name__)
 
@@ -27,13 +24,17 @@ class KeywordQueryEventListener(EventListener):
 
     def on_event(self, event, extension):
         items = []
-        element_selected = event.get_argument()
-        dotdesktopapps = extension.preferences['dotdesktop_files']     
+
+        on_enter = {'alt_enter': False}
+
+        dotdesktop_files = extension.preferences['dotdesktop_files']
+        dotdesktop_files = dotdesktop_files.replace(':', ' ')
 
         items.append(ExtensionResultItem(icon='images/icon.png',
-                                         name='All',
-                                         description='Description',
-                                         highlightable=False
+                                         name='Run Apps',
+                                         description='%s'%(dotdesktop_files),
+                                         highlightable=False,
+                                         on_enter=ExtensionCustomAction(on_enter)
                                          ))
 
         return RenderResultListAction(items)
@@ -42,8 +43,13 @@ class KeywordQueryEventListener(EventListener):
 class ItemEnterEventListener(EventListener):
 
     def on_event(self, event, extension):
-        data = event.get_data()
-        os.system("notify-send 'Automato deploy' 'Subida a Vercel. Actualizado y subido!!' -a 'Automato' -u critical -i checkbox-checked-symbolic")
+        dotdesktop_files = extension.preferences['dotdesktop_files']
+        programs = dotdesktop_files.split(':')
+
+        for p in programs:
+            os.system("gtk-launch %s"%(p))
+
+        os.system("notify-send 'Programs launched' '%s' -a 'Ulauncher' -u critical -i checkbox-checked-symbolic"%(dotdesktop_files))
 
         # return RenderResultListAction([ExtensionResultItem(icon='images/icon.png',
         #                                                    name=data['new_name'],
