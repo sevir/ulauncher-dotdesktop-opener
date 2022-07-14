@@ -11,7 +11,7 @@
     {
       "id": "dotdesktop_kw",
       "type": "keyword",
-      "name": "DotDesktop Keyword",
+      "name": "DotDesktop",
       "default_value": "open"
     },
     {

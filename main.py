@@ -6,6 +6,7 @@ from ulauncher.api.client.Extension import Extension
 from ulauncher.api.client.EventListener import EventListener
 from ulauncher.api.shared.event import KeywordQueryEvent, ItemEnterEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
+from ulauncher.api.shared.item.ExtensionSmallResultItem import ExtensionSmallResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.ExtensionCustomAction import ExtensionCustomAction
 from ulauncher.api.shared.action.HideWindowAction import HideWindowAction
@@ -27,13 +28,10 @@ class KeywordQueryEventListener(EventListener):
     def on_event(self, event, extension):
         items = []
         element_selected = event.get_argument()
-        dotdesktopapps = extension.preferences['dotdesktop_files']
-
-        if event.get_argument() is None:
-            return        
+        dotdesktopapps = extension.preferences['dotdesktop_files']     
 
         items.append(ExtensionResultItem(icon='images/icon.png',
-                                         name='resulttext',
+                                         name='All',
                                          description='Description',
                                          highlightable=False
                                          ))
